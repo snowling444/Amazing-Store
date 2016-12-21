@@ -1,11 +1,26 @@
 import React from 'react';
+import axios from 'axios';
 
 class Post extends React.Component {
+  constructor(){
+    super();
+    this.state={
+      title:'',
+      content:''
+    }
+  }
+  componentWillMount(){
+    axios.get(`http://localhost:3000/posts/${this.props.params.id}`)
+      .then( res => this.setState({
+        title:res.data.post.title,
+        content:res.data.post.content
+      }) )
+  }
   render(){
-    console.log(this.props.params);
     return(
       <div>
-        <h4>Hello</h4>
+        <h3>{this.state.title}</h3>
+        <p>{this.state.content}</p>
       </div>
     )
   }
