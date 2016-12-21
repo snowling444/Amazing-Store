@@ -22,6 +22,7 @@ class Home extends React.Component {
     return(
       <div>
         {postList}
+        <Link to='/new'>New Post</Link>
       </div>
     )
   }

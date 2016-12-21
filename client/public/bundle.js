@@ -54,7 +54,7 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	__webpack_require__(263);
+	__webpack_require__(264);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21529,6 +21529,10 @@
 
 	var _Post2 = _interopRequireDefault(_Post);
 
+	var _NewPost = __webpack_require__(263);
+
+	var _NewPost2 = _interopRequireDefault(_NewPost);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var renderRoutes = function renderRoutes() {
@@ -21539,6 +21543,7 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _App2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: '/new', component: _NewPost2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: '/posts/:id', component: _Post2.default })
 	    )
 	  );
@@ -26867,7 +26872,12 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        postList
+	        postList,
+	        _react2.default.createElement(
+	          _reactRouter.Link,
+	          { to: '/new' },
+	          'New Post'
+	        )
 	      );
 	    }
 	  }]);
@@ -28387,13 +28397,83 @@
 /* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(178);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _axios = __webpack_require__(237);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var NewPost = function (_React$Component) {
+	  _inherits(NewPost, _React$Component);
+
+	  function NewPost() {
+	    _classCallCheck(this, NewPost);
+
+	    return _possibleConstructorReturn(this, (NewPost.__proto__ || Object.getPrototypeOf(NewPost)).call(this));
+	  }
+
+	  _createClass(NewPost, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      e.preventDefault();
+	      var data = {};
+	      data.title = this.refs.title.value;
+	      data.content = this.refs.content.value;
+	      _axios2.default.post('http://localhost:3000/posts', data);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'form',
+	          { onSubmit: this.handleSubmit.bind(this) },
+	          _react2.default.createElement('input', { type: 'text', name: 'title', ref: 'title' }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement('input', { type: 'text', name: 'content', ref: 'content' }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement('input', { type: 'submit', value: '\u53D1\u8868' })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return NewPost;
+	}(_react2.default.Component);
+
+	exports.default = NewPost;
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(264);
+	var content = __webpack_require__(265);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(266)(content, {});
+	var update = __webpack_require__(267)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -28410,10 +28490,10 @@
 	}
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(265)();
+	exports = module.exports = __webpack_require__(266)();
 	// imports
 
 
@@ -28424,7 +28504,7 @@
 
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28479,7 +28559,7 @@
 	};
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
