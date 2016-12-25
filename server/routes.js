@@ -2,8 +2,8 @@ const Post = require('./models/post');
 
 module.exports = function(app){
   app.post('/posts',function(req,res){
-    let title = req.body.title;
-    let content = req.body.content;
+    // let title = req.body.title;
+    // let content = req.body.content;
     let post = new Post();
     post.title = req.body.title;
     post.content = req.body.content;

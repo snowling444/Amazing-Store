@@ -21533,6 +21533,10 @@
 
 	var _NewPost2 = _interopRequireDefault(_NewPost);
 
+	var _Edit = __webpack_require__(268);
+
+	var _Edit2 = _interopRequireDefault(_Edit);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var renderRoutes = function renderRoutes() {
@@ -21544,7 +21548,8 @@
 	      { path: '/', component: _App2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: '/new', component: _NewPost2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/posts/:id', component: _Post2.default })
+	      _react2.default.createElement(_reactRouter.Route, { path: '/posts/:id', component: _Post2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: '/edit/:id', component: _Edit2.default })
 	    )
 	  );
 	};
@@ -26860,24 +26865,38 @@
 	    value: function render() {
 	      var postList = this.state.data.map(function (post, i) {
 	        return _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/posts/' + post._id, key: i, className: 'post-card' },
+	          'div',
+	          { className: 'post-card', key: i },
 	          _react2.default.createElement(
-	            'h3',
-	            null,
+	            _reactRouter.Link,
+	            { to: '/posts/' + post._id },
 	            post.title
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { style: { float: 'right' } },
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/edit/' + post._id },
+	              '\u4FEE\u6539'
+	            ),
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/' },
+	              '\u5220\u9664'
+	            )
 	          )
 	        );
 	      });
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        postList,
 	        _react2.default.createElement(
 	          _reactRouter.Link,
-	          { to: '/new' },
+	          { to: '/new', className: 'new-btn' },
 	          'New Post'
-	        )
+	        ),
+	        postList
 	      );
 	    }
 	  }]);
@@ -28421,38 +28440,52 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	// import {browserHistory} from 'react-router';
+
 	var NewPost = function (_React$Component) {
 	  _inherits(NewPost, _React$Component);
 
 	  function NewPost() {
 	    _classCallCheck(this, NewPost);
 
-	    return _possibleConstructorReturn(this, (NewPost.__proto__ || Object.getPrototypeOf(NewPost)).call(this));
+	    var _this = _possibleConstructorReturn(this, (NewPost.__proto__ || Object.getPrototypeOf(NewPost)).call(this));
+
+	    _this.state = {
+	      work: false
+	    };
+	    return _this;
 	  }
 
 	  _createClass(NewPost, [{
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
+	      var _this2 = this;
+
 	      e.preventDefault();
-	      var data = {};
-	      data.title = this.refs.title.value;
-	      data.content = this.refs.content.value;
-	      _axios2.default.post('http://localhost:3000/posts', data);
+	      var title = this.refs.title.value;
+	      var content = this.refs.content.value;
+	      this.setState({ work: true });
+	      _axios2.default.post('http://localhost:3000/posts', { title: title, content: content }).then(
+	      // res => {this.context.router.push('/');
+	      // res => {browserHistory.push('/');
+	      function (res) {
+	        _this2.props.router.push('/');
+	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'new-post' },
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.handleSubmit.bind(this) },
-	          _react2.default.createElement('input', { type: 'text', name: 'title', ref: 'title' }),
+	          _react2.default.createElement('input', { type: 'text', placeholder: '\u6807\u9898', name: 'title', ref: 'title' }),
 	          _react2.default.createElement('br', null),
-	          _react2.default.createElement('input', { type: 'text', name: 'content', ref: 'content' }),
+	          _react2.default.createElement('input', { type: 'text', placeholder: '\u5185\u5BB9', name: 'content', ref: 'content' }),
 	          _react2.default.createElement('br', null),
-	          _react2.default.createElement('input', { type: 'submit', value: '\u53D1\u8868' })
+	          _react2.default.createElement('input', { type: 'submit', value: '\u53D1\u8868', className: 'btn', disabled: this.state.work })
 	        )
 	      );
 	    }
@@ -28460,6 +28493,10 @@
 
 	  return NewPost;
 	}(_react2.default.Component);
+
+	// NewPost.contextTypes = {
+	//   router: React.PropTypes.object.isRequired
+	// };
 
 	exports.default = NewPost;
 
@@ -28498,7 +28535,7 @@
 
 
 	// module
-	exports.push([module.id, "*{margin: 0;padding: 0;box-sizing: border-box;}\n.header{width: 100%;height: 80px;text-align: center;background-color: #5D4037;color: #fff;}\n.header a{color: #fff;text-decoration: none;}\n.post-card{text-decoration: none;display: block;width: 100%;max-width: 600px;margin: 0 auto;margin-top: 20px;box-shadow: 3px 3px 3px rgba(0,0,0,0.2);color: #5D4037;}\n", ""]);
+	exports.push([module.id, "*{margin: 0;padding: 0;box-sizing: border-box;}\n.header{width: 100%;height: 80px;text-align: center;background-color: #5D4037;color: #fff;}\n.header a{color: #fff;text-decoration: none;}\n.post-card{width: 100%;max-width: 500px;margin: 0 auto;margin-top: 20px;box-shadow: 3px 3px 3px rgba(0,0,0,0.2);}\n.post-card a{text-decoration: none;color: #5D4037;}\n.new-post input{width: 200px;height: 30px;margin-top: 30px;margin-left: 10px;border: 2px solid #5D4037;font-size: 14px;}\n.new-post a{text-decoration: none;display: inline-block;width: 200px;height: 30px;margin-top: 30px;margin-left: 10px;border: 2px solid #5D4037;font-size: 14px;text-align: center;line-height: 30px;}\n.new-post .btn{width: 100px;height: 30px;border-radius: 15px;background-color: #5D4037;color: #fff;border: none;}\n.new-btn{text-decoration: none;text-shadow: 2px 2px 2px #000;margin: 0 auto;color: #ccc;}\n", ""]);
 
 	// exports
 
@@ -28809,6 +28846,103 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(178);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _axios = __webpack_require__(237);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _reactRouter = __webpack_require__(179);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Edit = function (_React$Component) {
+	  _inherits(Edit, _React$Component);
+
+	  function Edit() {
+	    _classCallCheck(this, Edit);
+
+	    var _this = _possibleConstructorReturn(this, (Edit.__proto__ || Object.getPrototypeOf(Edit)).call(this));
+
+	    _this.state = {
+	      work: false,
+	      title: '',
+	      content: ''
+	    };
+	    return _this;
+	  }
+
+	  _createClass(Edit, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+
+	      _axios2.default.get('http://localhost:3000/posts/' + this.props.params.id).then(function (res) {
+	        return _this2.setState({
+	          title: res.data.post.title,
+	          content: res.data.post.content
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(e) {
+	      this.setState({ title: e.target.value });
+	    }
+	  }, {
+	    key: 'handleChange1',
+	    value: function handleChange1(e) {
+	      this.setState({ content: e.target.value });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'new-post' },
+	        _react2.default.createElement(
+	          'form',
+	          null,
+	          _react2.default.createElement('input', { type: 'text', value: this.state.title, name: 'title', ref: 'title', onChange: this.handleChange.bind(this) }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement('input', { type: 'text', value: this.state.content, name: 'content', ref: 'content', onChange: this.handleChange1.bind(this) }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement('input', { type: 'submit', value: '\u66F4\u65B0', className: 'btn', disabled: this.state.work }),
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/', className: 'btn' },
+	            '\u53D6\u6D88'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Edit;
+	}(_react2.default.Component);
+
+	exports.default = Edit;
 
 /***/ }
 /******/ ]);

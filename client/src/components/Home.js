@@ -15,14 +15,18 @@ class Home extends React.Component {
   }
   render(){
     let postList = this.state.data.map( (post,i) => (
-      <Link to={`/posts/${post._id}`} key={i} className='post-card'>
-        <h3>{post.title}</h3>
-      </Link>
+      <div className='post-card' key={i}>
+        <Link to={`/posts/${post._id}`}>{post.title}</Link>
+        <div style={{float:'right'}}>
+          <Link to={`/edit/${post._id}`}>修改</Link>
+          <Link to='/'>删除</Link>
+        </div>
+      </div>
     ) );
     return(
       <div>
+        <Link to='/new' className='new-btn'>New Post</Link>
         {postList}
-        <Link to='/new'>New Post</Link>
       </div>
     )
   }
