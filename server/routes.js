@@ -29,7 +29,10 @@ module.exports = function(app){
   })
 
   app.put('/posts/:id',function(req,res){
-    res.send('update a post')
+    Post.findOneAndUpdate({_id:req.params.id},req.body,function(err){
+      if (err) res.status(500).json({error:'failed'});
+      res.send('update a post');
+    })
   })
   app.delete('/posts/:id',function(req,res){
     res.send('delete a post')

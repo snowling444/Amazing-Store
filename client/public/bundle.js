@@ -28916,6 +28916,21 @@
 	      this.setState({ content: e.target.value });
 	    }
 	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      var _this3 = this;
+
+	      e.preventDefault();
+	      this.setState({ work: true });
+	      var title = this.refs.title.value;
+	      var content = this.refs.content.value;
+	      _axios2.default.put('http://localhost:3000/posts/' + this.props.params.id, { title: title, content: content }).then(function (res) {
+	        return _this3.props.router.push('/');
+	      }).catch(function (err) {
+	        return console.log(err);
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -28923,7 +28938,7 @@
 	        { className: 'new-post' },
 	        _react2.default.createElement(
 	          'form',
-	          null,
+	          { onSubmit: this.handleSubmit.bind(this) },
 	          _react2.default.createElement('input', { type: 'text', value: this.state.title, name: 'title', ref: 'title', onChange: this.handleChange.bind(this) }),
 	          _react2.default.createElement('br', null),
 	          _react2.default.createElement('input', { type: 'text', value: this.state.content, name: 'content', ref: 'content', onChange: this.handleChange1.bind(this) }),
