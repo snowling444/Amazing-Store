@@ -35,6 +35,10 @@ module.exports = function(app){
     })
   })
   app.delete('/posts/:id',function(req,res){
-    res.send('delete a post')
+    Post.findById({_id:req.params.id},function(err,post){
+      post.remove(function(err){
+        res.json({massage:'ok'})
+      });
+    })
   })
 }
