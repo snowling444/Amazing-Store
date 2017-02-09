@@ -14,12 +14,18 @@ class Home extends React.Component {
     axios.get('http://localhost:3000/posts')
       .then( res => this.setState({data:res.data.posts}) )
   }
-  handleClick(id){
-    const posts = filter( post => {
-      return post._id !== id
-    },this.state.data);
-    this.setState({data:posts})
-  }
+  handleClick(id) {
+  axios.delete(`http://localhost:3000/posts/${id}`).then(this.filterPost(id));
+
+}
+
+filterPost(id){
+  const posts = filter((post) => {
+    return post._id !== id
+  }, this.state.data);
+
+  this.setState({ data: posts });
+}
   render(){
     let postList = this.state.data.map( (post,i) => (
       <div className='post-card' key={i}>

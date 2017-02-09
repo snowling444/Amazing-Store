@@ -26867,9 +26867,15 @@
 	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(id) {
+	      _axios2.default.delete('http://localhost:3000/posts/' + id).then(this.filterPost(id));
+	    }
+	  }, {
+	    key: 'filterPost',
+	    value: function filterPost(id) {
 	      var posts = (0, _filter2.default)(function (post) {
 	        return post._id !== id;
 	      }, this.state.data);
+
 	      this.setState({ data: posts });
 	    }
 	  }, {
